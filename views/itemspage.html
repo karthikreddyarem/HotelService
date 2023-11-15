@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JSON Data Capture</title>
+    </head>
+
+    <body>
+
+        <h1>JSON Data Capture Example</h1>
+
+        <div id="dataDisplay"></div>
+
+        <script>
+            // Function to fetch and display JSON data
+            async function fetchData() {
+                try {
+                    // Make a request to the backend endpoint
+                    const response = await fetch('http://localhost:7070/getItems');
+
+                    // Check if the request was successful (status code 200)
+                    if (response.ok) {
+                        // Parse the JSON data from the response
+                        const jsonData = await response.json();
+
+                        // Display the JSON data on the page
+                        const dataDisplay = document.getElementById('dataDisplay');
+                        dataDisplay.textContent = JSON.stringify(jsonData, null, 2);
+                    } else {
+                        console.error('Failed to fetch data:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            }
+
+            // Call the fetchData function when the page loads
+            fetchData();
+        </script>
+
+    </body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management ChatBot</title>
+    <link rel="stylesheet" type="text/css" href="/chatbot.css" title="external style sheet">
+  </head>
+
+  <body>
+    <div id="container">
+      <main>
+        <header>
+          <img src="/Images/chatbot2.webp">
+          <div>
+            <h2>Chat with Hotel Management</h2>
+          </div>
+        </header>
+        <div id="chat" name="Admin">
+
+        </div>
+        <footer>
+          <form id="message_area">
+            <input type="number" id="input" placeholder="Enter input" min="1" required> <button
+              type="submit">Submit</button>
+          </form>
+        </footer>
+      </main>
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // const username = window.prompt("What do u want to be called by");
+      var socket = io();
+      socket.emit("new user", "username");
+
+      const messageList = document.getElementById("chat");
+      const textInput = document.getElementById("input");
+      const messageForm = document.getElementById("message_area")
+
+
+      messageForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (textInput.value) {
+          const temp_messageList = document.createElement("admin");
+          var chatItem = generateHTML("me");
+          temp_messageList.innerHTML = chatItem + '<p>' + textInput.value + '</p></div></li>';
+          messageList.appendChild(temp_messageList);
+          console.log(textInput.value);
+          socket.emit("new message", textInput.value);
+          textInput.value = "";
+        }
+      });
+
+      socket.on("admin que response", (data) => {
+        const temp_messageList = document.createElement("admin");
+        textInput.setAttribute('max', data.message.length);
+        var chatItem = generateHTML("you");
+        chatItem += '<h2> Please Enter your Query No.</h2>';
+        data.message.forEach(function (question, i) {
+          chatItem += '<p>' + (i + 1) + '. ' + question + '</p>';
+          chatItem
+        });
+        temp_messageList.innerHTML = chatItem + '</div></li>';
+        messageList.appendChild(temp_messageList);
+
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("admin response", (data) => {
+
+        const temp_messageList = document.createElement("admin");
+        var chatItem = generateHTML("you");
+        temp_messageList.innerHTML = chatItem + '<p>' + data.message + '</p></div></li>';
+        messageList.appendChild(temp_messageList);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      function generateHTML(sender) {
+        const output = `<li class="${sender}">
+            <div class="entete">
+              <span class="status green"></span>
+            </div>
+            <div class="message">`;
+        return output;
+      }
+    </script>
+
+  </body>
+
+</html>

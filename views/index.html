@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>HOME PAGE</title>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
+        <script type="text/javascript">
+            function redirect(btnId) {
+                if (btnId == "sinin")
+                    window.location = "http://localhost:7070/signin/";
+                else if (btnId == "sinup")
+                    window.location = "http://localhost:7070/signup/";
+            }
+        </script>
+
+    </head>
+
+    <body style="background-color:rgb(171, 195, 207)">
+        <font color="red">
+            <h1>Welcome to Jio Hotel Management</h1>
+        </font><br>
+        <div>
+            <input type="button" id="sinin" value="signin" onClick='redirect(this.id)' />
+            <input type="button" id="sinup" value="signup" onClick='redirect(this.id)' />
+        </div>
+
+    </body>
+
+</html>

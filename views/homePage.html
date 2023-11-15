@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jio Hotel Management</title>
+        <link rel="stylesheet" type="text/css" href="homepage.css" title="external style sheet">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Hotel Management</h1>
+            <p>Enhancing life around great food.</p>
+            <input type="button" id="GetItems" value="getItems" onClick='fetchData()' />
+            <input type="button" id="orderItems" value="orderItems" onClick='orderCart()' />
+            <input type="button" id="getTransactions" value="History" onClick='fetchHistoryDetailsData()' />
+            <input type="button" id="logout" value="Logout" onClick='logout()' />
+            <input type="button" id="chatBot" value="Have Queries?" onClick='redirectToBot()' />
+
+        </header>
+
+        <div id="dataDisplay" , class="restaurant">
+        </div>
+
+        <script>
+            // Function to fetch and display JSON data
+            async function fetchData() {
+                try {
+                    // Make a request to the backend endpoint
+                    const response = await fetch('http://localhost:7070/getItems');
+
+                    // Check if the request was successful (status code 200)
+                    if (response.ok) {
+                        // Parse the JSON data from the response
+                        const dataDisplay = document.getElementById('dataDisplay');
+
+                        dataDisplay.innerHTML = '';
+
+                        const jsonData = await response.json();
+                        const data = []
+                        for (var i in jsonData) {
+                            data.push(jsonData[i])
+                        }
+
+                        data.map(data => {
+                            const buttonHTML = `
+                            <div class="column-container">
+                                <button onclick="addtoCart('${data._id}',)">Add to Cart</button>
+                            </div>`;
+                            const itemElement = document.createElement('section');
+                            itemElement.classList.add('data');
+                            itemElement.innerHTML = `
+                            <h4>Dish Name: ${data.name}</h4>
+                            <p>Description: ${data.description}</p>
+                            <p>price: ${data.price}</p>
+                            <p>Dish Id: ${data._id}</p>
+                            <div class="break-before"></div>
+                            <div class = "column-container">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" id="userquantityid${data._id}" name="quantityid" min="1" required>
+                            </div>
+                            ` + buttonHTML;
+                            dataDisplay.appendChild(itemElement);
+                        });
+                    } else {
+                        console.error('Failed to fetch data:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            }
+
+            async function addtoCart(id) {
+                const userQuantity = document.getElementById("userquantityid" + id).value;
+
+                console.log(id, userQuantity)
+                const response = await fetch("http://localhost:7070/addItemsToCart", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ "id": id, "quantity": userQuantity }),
+                })
+
+            }
+
+            async function orderCart() {
+                const response = await fetch("http://localhost:7070/OrderItems", {
+                    method: "PUT",
+                })
+                console.log(response)
+
+            }
+
+            // Call the fetchData function when the page loads
+
+            async function fetchHistoryDetailsData() {
+                try {
+                    // Make a request to the backend endpoint
+                    const response = await fetch('http://localhost:7070/user/getTransactions');
+
+                    // Check if the request was successful (status code 200)
+                    if (response.ok) {
+                        // Parse the JSON data from the response
+                        const jsonData = await response.json();
+                        console.log(jsonData)
+
+                        // Display the JSON data on the page
+                        const dataDisplay = document.getElementById('dataDisplay');
+                        dataDisplay.innerHTML = '';
+
+                        const data = []
+                        for (var i in jsonData) {
+                            data.push(jsonData[i])
+                        }
+
+                        data.map(data => {
+                            const itemElement = document.createElement('div');
+                            itemElement.classList.add('data');
+                            itemElement.innerHTML = `
+                            <div class "text-boundary">
+                            <h4>OrderId: ${data._id}</h4>` + generateHtmlForjson(data.productids) + `
+                            <h3>Total Bill: ${data.total_bill}</h3>
+                            </div>
+                            `;
+                            dataDisplay.appendChild(itemElement);
+                        });
+                    } else {
+                        console.error('Failed to fetch data:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            }
+
+
+            function generateHtmlForjson(obj, parentKey = '') {
+                let html = '<ul>';
+                for (const key in obj) {
+                    console.log(obj[key])
+                    html += '<h3>Product ' + (Number(key) + 1) + '</h3>';
+                    html += '<p>ProductId: ' + obj[key]._id + '</p>';
+                    html += '<p>ProductName:' + obj[key].name + '</p>';
+                    html += '<p>Quantity: ' + obj[key].quantity + '</p>';
+                    html += '<p>price: ' + obj[key].price + '</p>';
+                }
+                return html;
+            }
+
+            async function logout() {
+                window.location = "http://localhost:7070/signin/";
+                const response = await fetch('http://localhost:7070/logout', { method: "GET", });
+
+            }
+
+
+            async function redirectToBot() {
+                window.location = "http://localhost:7070/chatme/";
+            }
+
+        </script>
+
+        <footer>
+            <p>&copy; 2023 Jio Hotel Management . All rights reserved.</p>
+        </footer>
+
+
+    </body>
+
+</html>

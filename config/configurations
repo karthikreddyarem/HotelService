@@ -1,0 +1,11 @@
+// Exports
+
+module.exports = {
+  APPLICATION_PORT: 7070,
+  DATABASE_PORT: 5672,
+  DATABASE_URL: "mongodb://localhost/",
+  APPUSER: false,
+  ADMIN: true,
+  SECRETKEY: "salthash$12345",
+  COOKIEKEY: "token",
+};
