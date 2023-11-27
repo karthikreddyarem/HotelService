@@ -9,6 +9,9 @@
   },
   "author": "Karthik Reddy",
   "license": "ISC",
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "dependencies": {
     "amqplib": "^0.10.3",
     "cookie-parser": "^1.4.6",
