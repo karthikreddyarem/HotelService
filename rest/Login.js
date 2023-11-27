@@ -7,10 +7,8 @@ module.exports = async function login(req, res) {
   const { email, password, userRole } = req.body;
   const userType = userRole === "Admin" ? true : false;
   const user = await userSchema.model.findOne({ email });
-  if (!user) {
-    return res.sendFile(
-      "/Users/arem.reddy/workspace/Project/HotelService/views/loginMechanisms/signup.html"
-    );
+  if (!user) {    
+    return res.redirect("/signup");
   } else {
     if (password !== user.password || userType !== user.userRole) {
       return res.status(400);

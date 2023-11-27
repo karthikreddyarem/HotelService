@@ -14,9 +14,7 @@ module.exports = async function signup(req, res) {
     username.length < 4 ||
     email.length < 14
   ) {
-    return res.sendFile(
-      "/Users/arem.reddy/workspace/Project/HotelService/views/signup.html"
-    );
+    return res.redirect("/signup");
   }
 
   const isUserUnqiue = await userSchema.model.findOne({ email });
@@ -30,7 +28,7 @@ module.exports = async function signup(req, res) {
       username,
       email,
       password,
-      userRole: configs.ADMIN,
+      userRole: config.APPUSER,
     });
     return res.redirect("/signin");
   }

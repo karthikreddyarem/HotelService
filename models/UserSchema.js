@@ -1,6 +1,8 @@
 // Schema Design for the applications Users
 
-const cloudDbUrl = "mongodb+srv://endukuchepala:K@rthik01@credentials.efbelld.mongodb.net/?retryWrites=true&w=majority";
+const username = "hotelmanagement";
+const password = "hotel";
+const cloudDbUrl = "mongodb+srv://"+username +":"+ password+"@hotelmanagement.pbxdsak.mongodb.net/?retryWrites=true&w=majority";
 const localDburl = "mongodb://localhost/Credentials";
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -28,7 +30,8 @@ var UserSchema = new Schema({
 const model = mongoose.model("User", UserSchema);
 
 const dbConnection = async () => {
-  await mongoose.connect("mongodb://localhost/Credentials");
+  await mongoose.connect(cloudDbUrl,  { 
+    useNewUrlParser: true });
   console.log("DB connection Established.");
 };
 

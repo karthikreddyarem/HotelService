@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const redis = require("redis");
 const amqp = require("amqplib");
+const cors = require('cors');
 
 const app = express();
 
@@ -11,7 +12,7 @@ const configs = require("./config/configurations");
 // Import MongoDB Schema's
 const userSchema = require("./models/UserSchema");
 const itemsSchema = require("./models/ItemsSchema");
-const orderDetails = require("../OrderService/models/OrderSchema");
+const orderDetails = require("./models/OrderSchema");
 
 // Import middleware Functionalities
 const isAuthenticated = require("./middlewares/isAuthenticatedUser");
@@ -26,6 +27,8 @@ const adminGetItems = require("./rest/AdminGetItems");
 const adminCreateItems = require("./rest/AdminCreateItems");
 const adminDeleteItems = require("./rest/AdminDeleteItems");
 const adminUpdateItems = require("./rest/AdminUpdateItems");
+const localrabbitmq = "amqp://localhost:5672";
+const cloudamqp = "amqps://sariyfaw:Bpd0xsMTerAir2YQjeUMKXHXvvulXb_V@shark.rmq.cloudamqp.com/sariyfaw";
 
 let redisClient;
 // Create a client and establish connection with the client.
@@ -36,19 +39,25 @@ let redisClient;
 })();
 
 (async () => {
-  const amqpServer = "amqp://localhost:5672";
+  const amqpServer = cloudamqp;
   connection = await amqp.connect(amqpServer);
   channel = await connection.createChannel();
 })();
 
-app.set("view engine", "ejs");
+// app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
+app.set("view engine", "html");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname + "/views"));
+app.use(cors());
 
 // Listen requests in the configured Port address
-const server = app.listen(configs.APPLICATION_PORT, () => {
+const server = app.listen(configs.APPLICATION_PORT, (err) => {
+  if(err){
+    console.log(err);
+  }
   console.log(
     `Application Server is loaded and ready to listen in port: ${configs.APPLICATION_PORT}.`
   );
@@ -62,32 +71,29 @@ userSchema.dbConnection();
 
 // API's
 app.get("/", async (req, res) => {
-  res.render("/index.html");
+  res.render("index");
 });
 
 app.get("/signup", async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/signup.html"
+  res.sendFile(__dirname+ "/views/signup.html"
   );
 });
 
 app.get("/signin", async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/signin.html"
+  res.sendFile(__dirname+ "/views/signin.html"
   );
 });
 
 app.get("/getItems", isAuthenticated, userGetItems);
 
 app.get("/homePage", isAuthenticated, isAppUser, async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/homePage.html"
+  res.sendFile(__dirname + "/views/homePage.html"
   );
 });
 
 app.get("/admin/homePage", isAuthenticated, isAdmin, async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/AdminHomePage.html"
+  res.sendFile(__dirname+
+    "/views/AdminHomePage.html"
   );
 });
 
@@ -122,8 +128,8 @@ app.get(
 );
 
 app.get("/chatme", isAuthenticated, (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/chatbot.html"
+  res.sendFile(__dirname +
+    "/views/chatbot.html"
   );
 });
 
@@ -136,8 +142,8 @@ app.post("/signup", signupFunctionality);
 app.post("/signin", loginFunctionality);
 
 app.post("/homePage", isAuthenticated, isAppUser, async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/homePage.html"
+  res.sendFile(__dirname +
+    "/views/homePage.html"
   );
 });
 
@@ -227,8 +233,8 @@ app.put("/OrderItems", isAuthenticated, isAppUser, async (req, res) => {
 });
 
 app.post("/admin/homePage", isAuthenticated, isAdmin, async (req, res) => {
-  res.sendFile(
-    "/Users/arem.reddy/workspace/Project/HotelService/views/AdminHomePage.html"
+  res.sendFile(__dirname+
+    "/views/AdminHomePage.html"
   );
 });
 

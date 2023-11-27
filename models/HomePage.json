@@ -1,0 +1,126 @@
+{
+    "Homepage": {
+        "Maintextcolor": "000000",
+        "SubtextCheck": false,
+        "CTACheck": false,
+        "cOn": "2023-11-24T11:37:07.559Z"
+    },
+    "ClientSection": {
+        "isEnabled": false,
+        "Maintextcolor": "000000",
+        "SectionBGcolorCheck": false,
+        "Images": [],
+        "cOn": "2023-11-24T11:37:07.559Z"
+    },
+    "Cardnumbers": [],
+            "Productsection": [],
+    "keywordTransitionSection": {
+        "isEnabled": true,
+        "keywordTransitionDetails": {
+            "keywords": "{ready:\"hi\", Work:\"hello\"}"
+        }
+    },
+    "whyUsSection": {
+        "isEnabled": true,
+        "whyUsDetails": {
+            "sectionBG": {
+                "isChecklistEnabled": true,
+                "sectionBGColour": "red"
+            },
+            "numOfColumns": 2,
+            "numOfFields": 2,
+            "sectionHeaderText": "Test",
+            "sectionHeaderColour": "Blue",
+            "cardDetails": [
+                {
+                    "text": "This is the WhyUs image1",
+                    "asset": "whyUs1 assetlink"
+                },
+                {
+                    "text": "This is the WhyUs image2",
+                    "asset": "whyUs2 assetlink"
+                }
+            ]
+        }
+    },
+    "publishedAchievementsSection": {
+        "isEnabled": true,
+        "publishedAchievementsDetails": {
+            "headerText": "publishedAchievementsDetails",
+            "headerTextColour": "Red",
+            "subHeader": {
+                "isChecklistEnabled": false,
+                "subheaderText": "subHeaderText"
+            },
+            "sectionBG": {
+                "isChecklistEnabled": false,
+                "sectionBGcolour": "Yellow"
+            },
+            "numOfCards": 1,
+            "cta": {
+                "isChecklistEnabled": false,
+                "ctaText": "CTA_TEXT",
+                "ctaColour": "CTA_COLOUR",
+                "ctaTextColour": "CTA_TEXT_COLOUR"
+            },
+            "url": {
+                "isChecklistEnabled": false,
+                "urlLink": "generic tinyurl"
+            },
+            "achievementCards": [
+                {
+                    "text": "This is the achievementCards image",
+                    "asset": "AchieveMents assetlink"
+                }
+            ]
+        }
+    },
+    "testimonialsSection": {
+        "isEnabled": true,
+        "testimonialDetails": [
+            {
+                "headerField": {
+                    "isChecklistEnabled": false,
+                    "headerText": "headerText",
+                    "headertextColour": "Header_text_Colour_Blue"
+                },
+                "isPagination": false,
+                "numOfCards": 1,
+                "cardDetails": [
+                    {
+                        "descriptionText": "descriptionText",
+                        "clientName": "clientName",
+                        "clientDetails": "clientDetails",
+                        "cardDetail": {
+                            "text": "This is the client image1",
+                            "asset": "client assetlink"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "processSection": {
+        "isEnabled": false,
+        "processDetails": [
+            {
+                "headerField": {
+                    "isChecklistEnabled": false,
+                    "headerText": "headerText",
+                    "headertextColour": "Header_text_Colour_Red"
+                },
+                "isPagination": false,
+                "numOfCards": 1,
+                "cardDetails": [
+                    {
+                        "descriptionText": "descriptionText",
+                        "cardDetail": {
+                            "text": "This is the process image1",
+                            "asset": "process assetlink"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

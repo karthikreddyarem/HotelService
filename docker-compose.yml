@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  application:
+    build: .
+    ports:
+      - "7070:7070"
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis/redis-stack-server:latest"
+    ports:
+      - "6379:6379" 
